@@ -51,6 +51,13 @@
     <Compile Include="Model.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="CSV.cs" />
+    <Compile Include="Level.cs" />
+    <Compile Include="Editor.cs" />
+    <Compile Include="Camera.cs" />
+    <Compile Include="C.cs" />
+    <Compile Include="Utilities\Parsing.cs" />
+    <Compile Include="Snake.cs" />
+    <Compile Include="VBO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

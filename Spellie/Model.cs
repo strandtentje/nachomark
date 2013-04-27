@@ -8,24 +8,14 @@ using System.IO;
 
 namespace Spellie
 {
-	public class Model : List<Vector2>
+	public static class Triangle
 	{
-		public float OffsetX { get; private set; }
-		public float OffsetY { get; private set; }
-		public string Name { get; private set;} 
-
-		public Model (string name, string file)
+		private static Vector2[] tr = new Vector2[3] 
 		{
-			this.Name = name;
-
-			CSV.Read(file, delegate(string[] coords)
-         	{
-				this.Add(
-					new Vector2(
-					float.Parse(coords[0]),
-					float.Parse(coords[1])));
-			});
-		}
+			new Vector2(0f - 0.56f, 0f - 0.5f),
+			new Vector2(0f - 0.56f, 1f - 0.5f),
+			new Vector2(1.12f - 0.56f, 0.5f - 0.5f) 
+		};
 
 		/// <summary>
 		/// Draw the Model
@@ -48,17 +38,17 @@ namespace Spellie
 		/// <param name="d">
 		/// Depth
 		/// </param>
-		public Vector3[] GetPoints (float x, float y, float s, float c, float r, float d)
+		public static Vector3[] Get (float x, float y, float s, float c, float r, float d)
 		{
-			List<Vector3> vecs = new List<Vector3>();
+			Vector3[] vecs = new Vector3[3];
 
-			foreach (Vector2 v in this)
-				vecs.Add(new Vector3(
-					x + v.X * c * r - v.Y * s * r,
-					y + v.X * s * r + v.Y * c * r, 
-					d));
-
-			return vecs.ToArray();
+			for(int i = 0; i < 3; i++)			
+				vecs[i] = new Vector3(
+					x + tr[i].X * c * r - tr[i].Y * s * r,
+					y + tr[i].X * s * r + tr[i].Y * c * r, 
+					d);
+			
+			return vecs;
 		}
 	}
 }

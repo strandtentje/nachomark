@@ -7,6 +7,18 @@ namespace Spellie
 {
     public static class MathTools
     {
+
+		public static bool overlappingTriangles (Vector3[] A, Vector3[] B)
+		{
+			bool one, two, three;
+
+			one = pointInTriangle(A[0].Xy, A[1].Xy, A[2].Xy, B[0].Xy);
+			two = pointInTriangle(A[0].Xy, A[1].Xy, A[2].Xy, B[1].Xy);
+			three = pointInTriangle(A[0].Xy, A[1].Xy, A[2].Xy, B[2].Xy);
+
+			return one || two || three;
+		}
+
         /// <summary>
         /// Mathy things to check if a point is within a rectangle.
         /// </summary>
