@@ -81,6 +81,8 @@ namespace Spellie
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
         }
+
+		List<Vertex> vti = new List<Vertex>();
 	
 		protected override void OnUpdateFrame (FrameEventArgs e)
 		{
@@ -88,8 +90,12 @@ namespace Spellie
 
 			Camera.MoveHorizontally (Keyboard [Key.Number9], Keyboard [Key.Number0], Keyboard [Key.LShift]);
 
-			foreach (Snake s in snakes)
+			vti.Clear();
+			foreach (Snake s in snakes) {
 				s.Update ();
+				vti.AddRange(s.Draw (ar, ag, ab));
+			}
+
 
 			ColourFade ();
 
@@ -158,13 +164,6 @@ namespace Spellie
 				snakes[2].Level[1].Z);*/
 
 			Camera.Update ();
-
-			List<Vertex> vti = new List<Vertex>();
-
-
-			foreach (Snake s in snakes) 
-				vti.AddRange(s.Draw (ar, ag, ab));
-
 
 			vbo.SetData(vti.ToArray());
 			vbo.Render();
