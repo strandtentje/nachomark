@@ -28,11 +28,6 @@ namespace Spellie
 			Level.UpdatePoints();
 		}
 
-		public void Render(float r, float g, float b)
-		{
-			Level.Draw(r, g, b);
-		}
-
 		public Snake (int cBase)
 		{
 			Level = new Level(cBase);//"level");

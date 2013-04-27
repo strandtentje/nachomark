@@ -17,9 +17,7 @@ namespace Spellie
 				GraphicsMode.Default, "Spellie", 
 				(GameWindowFlags)Enum.Parse(typeof(GameWindowFlags), Configuration["mode"]))) 
 			{
-				gw.Run(
-					int.Parse(Configuration["gamespeed"]), 
-					int.Parse(Configuration["framerate"]));
+				gw.Run (100);
 			}
 		}
 	}

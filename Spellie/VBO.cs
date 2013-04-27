@@ -1,15 +1,15 @@
 using System;
-using OpenTK.Graphics;
+using OpenTK.Graphics.OpenGL;
 using OpenTK;
 using System.Runtime.InteropServices;
 
 namespace Spellie
 {
 	// Change this struct to add e.g. color data or anything else you need.
-	struct Vertex
+	public struct Vertex
 	{
-	    public Vector3 Position;
-		public Color4 Color;
+	    public OpenTK.Graphics.Color4 Color;
+		public Vector3 Position;
 
 	    public static readonly int Stride = Marshal.SizeOf(default(Vertex));
 	}
@@ -30,7 +30,7 @@ namespace Spellie
 	            // Create an id on first use.
 	            if (id == 0)
 	            {
-	                GraphicsContext.Assert();
+	                OpenTK.Graphics.GraphicsContext.Assert();
 	 
 	                GL.GenBuffers(1, out id);
 	                if (id == 0)
@@ -59,16 +59,14 @@ namespace Spellie
 	 
 	    public void Render()
 	    {
-	        /* GL.EnableClientState(EnableCap.VertexArray);
-	        GL.EnableClientState(EnableCap.NormalArray);
-	        GL.EnableClientState(EnableCap.TextureCoordArray);
-	 
+			GL.EnableClientState(ArrayCap.ColorArray);
+			GL.EnableClientState(ArrayCap.VertexArray);
+
 	        GL.BindBuffer(BufferTarget.ArrayBuffer, Id);
-	        GL.VertexPointer(3, VertexPointerType.Float, Vertex.Stride, new IntPtr(0));
-	        GL.NormalPointer(3, NormalPointerType.Float, Vertex.Stride, new IntPtr(Vector3.SizeInBytes));
-	        GL.TexCoordPointer(2, VertexPointerType.Float, Vertex.Stride, new IntPtr(2 * Vector3.SizeInBytes));
-	        GL.DrawArrays(BeginMode.Triangles, 0, data.Length);
-	   */ }
+			GL.ColorPointer(4, ColorPointerType.Float, Vertex.Stride, 0);
+			GL.VertexPointer(3, VertexPointerType.Float, Vertex.Stride, Marshal.SizeOf(default(OpenTK.Graphics.Color4)));
+			GL.DrawArrays(BeginMode.Triangles, 0, data.Length);
+	    }
 	}
 }
 

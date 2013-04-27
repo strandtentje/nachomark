@@ -16,7 +16,8 @@ namespace Spellie
 		public SpellieVenster (int w, int h, GraphicsMode g, string t, GameWindowFlags f)
 			: base(1600, 900, GraphicsMode.Default, "Spellie", GameWindowFlags.Fullscreen)
 		{
-
+			VSync = VSyncMode.Off;
+			this.WindowState = OpenTK.WindowState.Fullscreen;
 		}
 
 		float gameSpeed = -0.4f;
@@ -28,12 +29,14 @@ namespace Spellie
 		{
 			base.OnLoad (e);
 
-			for(int i = 1; i < 5; i++)
+			for(int i = 1; i < 90; i++)
 				snakes.Add(new Snake(i % 15));
 		
 			GL.ClearColor(0f, 0f, 0f, 0f);
-			GL.Enable(EnableCap.DepthTest);
+
 			GL.Enable(EnableCap.AlphaTest);
+			GL.Enable(EnableCap.Blend);
+			GL.Enable(EnableCap.DepthTest);
 
 		}
 
@@ -52,16 +55,54 @@ namespace Spellie
 		{
 			base.OnUpdateFrame (e);
 
-			Camera.MoveHorizontally(Keyboard[Key.Number9], Keyboard[Key.Number0], Keyboard[Key.LShift]);
+			Camera.MoveHorizontally (Keyboard [Key.Number9], Keyboard [Key.Number0], Keyboard [Key.LShift]);
 
-			foreach(Snake s in snakes)
-				s.Update();
+			foreach (Snake s in snakes)
+				s.Update ();
 
-			if (Keyboard[Key.Escape]) Exit();
+			ColourFade ();
+
+			if (Keyboard [Key.Escape]) {
+				Console.WriteLine("Avg: " + aFps.ToString());
+				Console.WriteLine("Max: " + hFps.ToString());
+
+				Exit ();
+			}
+		}
+
+		void ColourFade()
+		{
+			
+			ar += dr;
+			ag += dg;
+			ab += db;
+
+			if (ar > 1f)
+				dr = -0.005f;
+			if (ag > 1f)
+				dg = -0.005f;
+			if (ab > 1f)
+				db = -0.005f;
+
+			if (ar < 0f)
+				dr = 0.005f;
+			if (ag < 0f)
+				dg = 0.005f;
+			if (ab < 0f)
+				db = 0.005f;
 		}
 
 		float ar = 0.2f, ag = 0.5f, ab = 0.8f;
 		float dr = 0.005f, dg = 0.005f, db = 0.005f;
+
+		double pDate = DateTime.Now.TimeOfDay.TotalMilliseconds;
+		double cDate ;
+
+		double fps;
+
+		double hFps, aFps;
+		
+		VertexBuffer vbo = new VertexBuffer();
 
 		protected override void OnRenderFrame (FrameEventArgs e)
 		{
@@ -70,10 +111,9 @@ namespace Spellie
 			GL.Clear (ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 					
 
-			Camera.subject = new Vector3(
-				snakes[0].Level[1].X,
-				snakes[0].Level[1].Y,
-				snakes[0].Level[1].Z);
+			Camera.subject.X = snakes [0].Level [1].X;
+			Camera.subject.Y = snakes [0].Level [1].Y;
+			Camera.subject.Z = snakes [0].Level [1].Z;
 			
 			/* Camera.camera = new Vector3(
 				snakes[1].Level[1].X,
@@ -85,22 +125,30 @@ namespace Spellie
 				snakes[2].Level[1].Y,
 				snakes[2].Level[1].Z);*/
 
-			Camera.Update();
+			Camera.Update ();
 
-			ar += dr; ag += dg; ab += db;
+			List<Vertex> vti = new List<Vertex>();
 
-			if (ar > 1f) dr = -0.005f;
-			if (ag > 1f) dg = -0.005f;
-			if (ab > 1f) db = -0.005f;
 
-			if (ar < 0f) dr = 0.005f;
-			if (ag < 0f) dg = 0.005f;
-			if (ab < 0f) db = 0.005f;
+			foreach (Snake s in snakes) 
+				vti.AddRange(s.Level.Draw (ar, ag, ab));
 
-			foreach(Snake s in snakes)
-				s.Render(ar, ag, ab);
+
+			vbo.SetData(vti.ToArray());
+			vbo.Render();
 
 			SwapBuffers();
+
+			cDate = DateTime.Now.TimeOfDay.TotalMilliseconds;
+
+			fps = 1000 / (cDate - pDate);
+
+			aFps += fps;
+			aFps /= 2;
+
+			hFps = (hFps < fps ? fps : hFps);
+
+			pDate = cDate;
 		}
 
 	}

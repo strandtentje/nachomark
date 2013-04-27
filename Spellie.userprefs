@@ -1,16 +1,33 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Spellie/Main.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Spellie/Editor.cs">
     <Files>
-      <File FileName="Spellie/Main.cs" Line="13" Column="1" />
+      <File FileName="Spellie/Main.cs" Line="22" Column="5" />
+      <File FileName="Spellie/SpellieVenster.cs" Line="31" Column="25" />
+      <File FileName="Spellie/Entity.cs" Line="157" Column="23" />
+      <File FileName="Spellie/Level.cs" Line="27" Column="25" />
+      <File FileName="Spellie/C.cs" Line="29" Column="22" />
+      <File FileName="Spellie/Utilities/Parsing.cs" Line="34" Column="39" />
+      <File FileName="Spellie/Model.cs" Line="33" Column="3" />
+      <File FileName="Spellie/Editor.cs" Line="18" Column="6" />
+      <File FileName="Spellie/Snake.cs" Line="21" Column="18" />
+      <File FileName="Spellie/Camera.cs" Line="11" Column="40" />
+      <File FileName="Spellie/VBO.cs" Line="42" Column="7" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
-          <Node name="Spellie" expanded="True" selected="True">
-            <Node name="References" expanded="True" />
+          <Node name="Spellie" expanded="True">
+            <Node name="Utilities" expanded="True" />
+            <Node name="Editor.cs" selected="True" />
           </Node>
         </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>

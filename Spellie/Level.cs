@@ -24,75 +24,11 @@ namespace Spellie
 			Entity e = new Entity (0f, 0f, 0f, null, 0.0001f, 0f, 0.001f, 0.001f, 0.3f, 0f, 0, 1f, 0.989f, "main");
 			this.Add (e);
 
-			for (int i = 0; i < 250; i++) {
+			for (int i = 0; i < 80; i++) {
 				this.Add(new Entity(
 					rand() * 2 - 1, rand() * 2 - 1, 4f, 
 					this[(int)(i * rand())], 0.001f + rand() * 0.005f, 0.001f + rand() * 0.005f, 0.001f + rand() * 0.005f, 0.001f,
 					0.1f + rand () * 0.3f, 0f, cBase, 0f, 0.99f - rand() * 0.1f, "toet"));
-			}
-		}
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Spellie.Level"/> class.
-		/// </summary>
-		/// <param name='fileName'>
-		/// File name of the file to load the level out of.
-		/// </param>
-		public Level (string fileName)
-		{
-			C.Read(fileName, delegate(C.ValueSet v)
-        	{	
-				Entity e = new Entity(name: v.Name);
-				e.X = v.TryGetFloat("x", e.X);
-				e.Y = v.TryGetFloat("y", e.Y);
-				e.Z = v.TryGetFloat("z", e.Z);
-
-				try
-				{
-					e.Target = internalReference[v["target"]];
-				}
-				catch
-				{
-
-				}
-
-				e.ProportionalGain = v.TryGetFloat("p", e.ProportionalGain);
-				e.IntegralGain = v.TryGetFloat("i", e.IntegralGain);
-				e.DifferentialGain = v.TryGetFloat("d", e.DifferentialGain);
-				e.IntegralCap = v.TryGetFloat("c", e.IntegralCap);
-				e.Scale = v.TryGetFloat("size", e.Scale);
-				e.Rotate = v.TryGetFloat("rotate", e.Rotate);
-				e.Color = v.TryGetInt("color", e.Color);
-				e.Gentleness = v.TryGetFloat("gentle", e.Gentleness);
-				e.Friction = v.TryGetFloat("frict", e.Friction);
-
-				internalReference.Add(e.Name, e);
-				this.Add(e);
-			});
-		}
-
-		public void Save (string file)
-		{			
-			C.Clear (file);
-
-			foreach (Entity e in this) {
-				C.ValueSet vSet = new C.ValueSet();
-				vSet.Name = e.Name;
-				vSet.Set("x", e.X);
-				vSet.Set("y", e.Y);
-				vSet.Set("z", e.Z);
-				if (e.Target != null) vSet.Set("target", e.Target.Name);
-				vSet.Set("p", e.ProportionalGain);
-				vSet.Set("i", e.IntegralGain);
-				vSet.Set("d", e.DifferentialGain);
-				vSet.Set("c", e.IntegralCap);
-				vSet.Set("size", e.Scale);
-				vSet.Set("rotate", e.Rotate);
-				vSet.Set("color", e.Color);
-				vSet.Set("gentle", e.Gentleness);
-				vSet.Set("frict", e.Friction);
-
-				C.Append(file,  vSet);
 			}
 		}
 
@@ -110,28 +46,35 @@ namespace Spellie
 
 		Vector3 nearer = new Vector3(0,0,-0.05f);
 
-		public void Draw (float r, float g, float b)
+		public Vertex[] Draw (float r, float g, float b)
 		{			
-			GL.Begin(BeginMode.Triangles);
-			foreach (Entity ent in this) {
+			Entity ent;
+
+			Vertex[] vti = new Vertex[this.Count * 3];
+
+			for(int i = 0; i < this.Count; i++)
+			{
+				ent = this[i];
+
 				if (ent.Points != null) 
 				{	
+					float m = (20f - ent.Z) / 20f ;
+
 					Color4 c = ent.GetRealColor() ;
 
-					float m = (16f - ent.Z) / 16f ;
+					for(int j = 0; j < 3; j++)
+					{
+						vti[i * 3 + j].Color.A = 1.0f;
+						vti[i * 3 + j].Color.R = (c.R + r) * m;
+						vti[i * 3 + j].Color.G = (c.G + g) * m;
+						vti[i * 3 + j].Color.B = (c.B + b) * m;
 
-					GL.Color3(
-						(c.R + r) * m,
-						(c.G + g) * m,
-						(c.B + b) * m);
-
-
-					foreach (Vector3 v in ent.Points)
-						GL.Vertex3 (v);
-
+						vti[i * 3 + j].Position = ent.Points[j];
+					}
 				}
 			}
-			GL.End();
+
+			return vti;
 		}
 	}
 }

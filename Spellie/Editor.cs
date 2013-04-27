@@ -15,7 +15,7 @@ namespace Spellie
 			Keymap.Add(Key.Tilde, delegate() { Select(cEnt - 1); });
 			Keymap.Add(Key.F1, Duplicate);
 			Keymap.Add(Key.F2, Delete);
-			Keymap.Add(Key.F3, delegate() { Level.Save("level"); });
+			//Keymap.Add(Key.F3, delegate() { Level.Save("level"); });
 			Keymap.Add(Key.B, delegate() { Toggle(4); });
 			Keymap.Add(Key.N, delegate() { Toggle(2); });
 			Keymap.Add(Key.M, delegate() { Toggle(1); });
