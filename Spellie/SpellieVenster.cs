@@ -12,12 +12,43 @@ namespace Spellie
 	class SpellieVenster : OpenTK.GameWindow
 	{
 		Camera Camera = new Camera();
+		C.ValueSet config;
 
-		public SpellieVenster (int w, int h, GraphicsMode g, string t, GameWindowFlags f)
+		bool follow; float fov;
+		int snakeCount, elemCount;
+
+		float offCenter, amplitude;
+		float near, far;
+		float smallest, extra;
+
+		public SpellieVenster (C.ValueSet config)
 			: base(1600, 900, GraphicsMode.Default, "Spellie", GameWindowFlags.Fullscreen)
 		{
+			this.config = config;
+
 			VSync = VSyncMode.Off;
-			this.WindowState = OpenTK.WindowState.Fullscreen;
+
+			this.WindowBorder = OpenTK.WindowBorder.Hidden;
+			this.Location = 
+				new System.Drawing.Point(
+					config.TryGetInt("left", 0),
+					config.TryGetInt("top", 0));
+			this.Size = 
+				new System.Drawing.Size(
+					config.TryGetInt("width", 800), 
+					config.TryGetInt("height", 600));
+
+			follow = config.TryGetInt("follow", 1) == 1;
+			snakeCount = config.TryGetInt("nsnakes", 10);
+			elemCount = config.TryGetInt("nelem", 100);
+			fov = config.TryGetFloat("fov", 4.0f);
+
+			offCenter = config.TryGetFloat("center", 4.0f);
+			amplitude = config.TryGetFloat("ampli", 4.0f);
+			near = config.TryGetFloat("near", 1.0f);
+			far = config.TryGetFloat("far", 16f);
+			smallest = config.TryGetFloat("smallest",0.1f);
+			extra = config.TryGetFloat("extra", 0.3f);
 		}
 
 		float gameSpeed = -0.4f;
@@ -29,8 +60,8 @@ namespace Spellie
 		{
 			base.OnLoad (e);
 
-			for(int i = 1; i < 90; i++)
-				snakes.Add(new Snake(i % 15));
+			for(int i = 1; i < snakeCount; i++)
+				snakes.Add(new Snake(i % 15, elemCount, offCenter, amplitude, near, far, smallest, extra));
 		
 			GL.ClearColor(0f, 0f, 0f, 0f);
 
@@ -46,7 +77,7 @@ namespace Spellie
 
             GL.Viewport(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width, ClientRectangle.Height);
 
-            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / 4, Width / (float)Height, 1.0f, 64.0f);
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)Math.PI / fov, Width / (float)Height, 1.0f, 64.0f);
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
         }
@@ -110,11 +141,12 @@ namespace Spellie
 
 			GL.Clear (ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 					
+			if (follow) {
+				Camera.subject.X = snakes [0] [1].X;
+				Camera.subject.Y = snakes [0] [1].Y;
+				Camera.subject.Z = snakes [0] [1].Z;
+			}
 
-			Camera.subject.X = snakes [0].Level [1].X;
-			Camera.subject.Y = snakes [0].Level [1].Y;
-			Camera.subject.Z = snakes [0].Level [1].Z;
-			
 			/* Camera.camera = new Vector3(
 				snakes[1].Level[1].X,
 				snakes[1].Level[1].Y,
@@ -131,7 +163,7 @@ namespace Spellie
 
 
 			foreach (Snake s in snakes) 
-				vti.AddRange(s.Level.Draw (ar, ag, ab));
+				vti.AddRange(s.Draw (ar, ag, ab));
 
 
 			vbo.SetData(vti.ToArray());

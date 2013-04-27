@@ -8,14 +8,14 @@ namespace Spellie
 	{
 		public static void Main (string[] args)
 		{
-			Settings Configuration = new Settings ("settings.txt");
+			C.Read("settings", runWithSettings);
+		}
 
+		public static void runWithSettings(C.ValueSet config)
+		{			
 			using (
 			SpellieVenster gw = new SpellieVenster(
-				int.Parse(Configuration["width"]), 
-				int.Parse(Configuration["height"]), 
-				GraphicsMode.Default, "Spellie", 
-				(GameWindowFlags)Enum.Parse(typeof(GameWindowFlags), Configuration["mode"]))) 
+				config))
 			{
 				gw.Run (100);
 			}

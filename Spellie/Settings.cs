@@ -59,9 +59,12 @@ namespace Spellie
 			{	// Bestandje lees 
 				string[] line = fileReader.ReadLine ().Split ('=');  // Regeltje splijt
 
-				if ((line [0] [0] != '#') && 	// Niet comment
-				    (line.Length > 1))   // Wel instelling
-					settings.Add (line [0], line [1]);  // Opsla.
+				if (line.Length > 0)
+				{
+					if ((!line[0].StartsWith("#")) && 	// Niet comment
+					    (line.Length > 1))   // Wel instelling
+						settings.Add (line [0], line [1]);  // Opsla.
+				}
 			}
 
 			fileReader.Close();
