@@ -28,7 +28,7 @@ namespace Spellie
 		{
 			base.OnLoad (e);
 
-			for(int i = 1; i < 50; i++)
+			for(int i = 1; i < 5; i++)
 				snakes.Add(new Snake(i % 15));
 		
 			GL.ClearColor(0f, 0f, 0f, 0f);
