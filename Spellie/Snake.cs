@@ -68,9 +68,9 @@ namespace Spellie
 		{			
 			ctr++;
 
-			if (ctr == 110)
+			if (ctr == erval)
 			{
-				bait.X = (offCenter + (float)rnd.NextDouble() * amplitude) * (rnd.Next(2) == 1 ? -1 : 1);
+				bait.X = (offCenter + (float)rnd.NextDouble() * amplitude * SpellieVenster.ratio) * (rnd.Next(2) == 1 ? -1 : 1);
 				bait.Y = (offCenter + (float)rnd.NextDouble() * amplitude) * (rnd.Next(2) == 1 ? -1 : 1);
 				bait.Z = (near + (float)rnd.NextDouble() * far);
 				ctr =0;
@@ -82,12 +82,14 @@ namespace Spellie
 
 		float offCenter, amplitude;
 		float near, far;
+		int erval;
 
-		public Snake (int cBase, int nelem, float offCenter, float amplitude, float near, float far, float minSize, float addSize)
+		public Snake (int cBase, int nelem, float offCenter, float amplitude, float near, float far, float minSize, float addSize, int erval)
 		{			
 			this.offCenter = offCenter;
 			this.amplitude = amplitude;
 			this.near = near; this.far = far;
+			this.erval = erval;
 
 			Entity e = new Entity (0f, 0f, 0f, null, 0.0001f, 0f, 0.001f, 0.001f, 0.3f, 0f, 0, 1f, 0.989f, "main");
 			this.Add (e);

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using GraphicsMode = OpenTK.Graphics.GraphicsMode;
 using Color4 = OpenTK.Graphics.Color4;
+using System.Threading;
 
 namespace Spellie
 {
@@ -21,6 +22,11 @@ namespace Spellie
 		float near, far;
 		float smallest, extra;
 
+		int threads;
+		int erval;
+
+		public static float ratio;
+
 		public SpellieVenster (C.ValueSet config)
 			: base(1600, 900, GraphicsMode.Default, "Spellie", GameWindowFlags.Fullscreen)
 		{
@@ -28,27 +34,37 @@ namespace Spellie
 
 			VSync = VSyncMode.Off;
 
-			this.WindowBorder = OpenTK.WindowBorder.Hidden;
-			this.Location = 
-				new System.Drawing.Point(
-					config.TryGetInt("left", 0),
-					config.TryGetInt("top", 0));
-			this.Size = 
-				new System.Drawing.Size(
-					config.TryGetInt("width", 800), 
-					config.TryGetInt("height", 600));
+			if (false) {
+				this.WindowBorder = OpenTK.WindowBorder.Hidden;
+				this.Location = 
+				new System.Drawing.Point (
+					config.TryGetInt ("left", 0),
+					config.TryGetInt ("top", 0));
+				this.Size = 
+				new System.Drawing.Size (
+					config.TryGetInt ("width", 800), 
+					config.TryGetInt ("height", 600));
+			}
 
-			follow = config.TryGetInt("follow", 1) == 1;
-			snakeCount = config.TryGetInt("nsnakes", 10);
-			elemCount = config.TryGetInt("nelem", 100);
-			fov = config.TryGetFloat("fov", 4.0f);
+			ratio = (float)(this.Width) / (float)(this.Height);
 
-			offCenter = config.TryGetFloat("center", 4.0f);
-			amplitude = config.TryGetFloat("ampli", 4.0f);
-			near = config.TryGetFloat("near", 1.0f);
-			far = config.TryGetFloat("far", 16f);
-			smallest = config.TryGetFloat("smallest",0.1f);
-			extra = config.TryGetFloat("extra", 0.3f);
+			follow = config.TryGetInt ("follow", 1) == 1;
+			snakeCount = config.TryGetInt ("nsnakes", 10);
+			elemCount = config.TryGetInt ("nelem", 100);
+			fov = config.TryGetFloat ("fov", 4.0f);
+
+			offCenter = config.TryGetFloat ("center", 4.0f);
+			amplitude = config.TryGetFloat ("ampli", 4.0f);
+			near = config.TryGetFloat ("near", 1.0f);
+			far = config.TryGetFloat ("far", 16f);
+			smallest = config.TryGetFloat ("smallest", 0.1f);
+			extra = config.TryGetFloat ("extra", 0.3f);
+
+			erval = config.TryGetInt("targetinterval", 110);
+
+			//threads = config.TryGetInt ("threads", 2);
+
+			//updateReady= new Semaphore(0, threads);
 		}
 
 		float gameSpeed = -0.4f;
@@ -56,12 +72,13 @@ namespace Spellie
 
 		List<Snake> snakes = new List<Snake>();
 
+
 		protected override void OnLoad (EventArgs e)
 		{
 			base.OnLoad (e);
 
-			for(int i = 1; i < snakeCount; i++)
-				snakes.Add(new Snake(i % 15, elemCount, offCenter, amplitude, near, far, smallest, extra));
+			for(int i = 1; i <= snakeCount; i++)
+				snakes.Add(new Snake(i % 15, elemCount, offCenter, amplitude, near, far, smallest, extra, erval));
 		
 			GL.ClearColor(0f, 0f, 0f, 0f);
 
@@ -82,20 +99,17 @@ namespace Spellie
             GL.LoadMatrix(ref projection);
         }
 
-		List<Vertex> vti = new List<Vertex>();
+		//Semaphore updateReady;
 	
 		protected override void OnUpdateFrame (FrameEventArgs e)
 		{
 			base.OnUpdateFrame (e);
 
-			Camera.MoveHorizontally (Keyboard [Key.Number9], Keyboard [Key.Number0], Keyboard [Key.LShift]);
-
 			vti.Clear();
-			foreach (Snake s in snakes) {
-				s.Update ();
-				vti.AddRange(s.Draw (ar, ag, ab));
+			for (int i = 0; i < snakes.Count; i ++) {
+				snakes[i].Update ();
+				vti.AddRange(snakes[i].Draw (ar, ag, ab));
 			}
-
 
 			ColourFade ();
 
@@ -138,8 +152,9 @@ namespace Spellie
 		double fps;
 
 		double hFps, aFps;
-		
+
 		VertexBuffer vbo = new VertexBuffer();
+		List<Vertex> vti = new List<Vertex>();
 
 		protected override void OnRenderFrame (FrameEventArgs e)
 		{
@@ -169,6 +184,8 @@ namespace Spellie
 			vbo.Render();
 
 			SwapBuffers();
+
+			return;
 
 			cDate = DateTime.Now.TimeOfDay.TotalMilliseconds;
 

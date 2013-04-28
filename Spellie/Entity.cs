@@ -115,9 +115,11 @@ namespace Spellie
 			X += VX; Y += VY; Z += VZ;
 		}
 
+		Triangle mine = new Triangle();
+
 		public void UpdatePoints()
 		{
-			Points = Triangle.Get (X, Y, Sin, Cos, Scale, Z);
+			Points = mine.Get (X, Y, Sin, Cos, Scale, Z);
 		}
 
 		public float X, Y, Z, Scale;
@@ -156,11 +158,10 @@ namespace Spellie
 				float green = ((Color & 2) != 0 ? 1.0f : 0f);
 				float blue = ((Color & 1) != 0 ? 1.0f : 0f);
 
-				npCol = new Color4 (
-				red, 
-				green, 
-				blue, 1.0f);
-
+				npCol.R = red;
+				npCol.G = green;
+				npCol.B = blue;
+				npCol.A = 1.0f;
 			}
 
 			return npCol;

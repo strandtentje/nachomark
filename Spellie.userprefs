@@ -1,25 +1,23 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Spellie/Editor.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Spellie/SpellieVenster.cs">
     <Files>
-      <File FileName="Spellie/Main.cs" Line="22" Column="5" />
-      <File FileName="Spellie/SpellieVenster.cs" Line="31" Column="25" />
-      <File FileName="Spellie/Entity.cs" Line="157" Column="23" />
-      <File FileName="Spellie/Level.cs" Line="27" Column="25" />
-      <File FileName="Spellie/C.cs" Line="29" Column="22" />
+      <File FileName="Spellie/Main.cs" Line="15" Column="4" />
+      <File FileName="Spellie/SpellieVenster.cs" Line="100" Column="45" />
+      <File FileName="Spellie/Entity.cs" Line="150" Column="31" />
+      <File FileName="Spellie/C.cs" Line="163" Column="22" />
       <File FileName="Spellie/Utilities/Parsing.cs" Line="34" Column="39" />
       <File FileName="Spellie/Model.cs" Line="33" Column="3" />
-      <File FileName="Spellie/Editor.cs" Line="18" Column="6" />
-      <File FileName="Spellie/Snake.cs" Line="21" Column="18" />
+      <File FileName="Spellie/Snake.cs" Line="99" Column="33" />
       <File FileName="Spellie/Camera.cs" Line="11" Column="40" />
-      <File FileName="Spellie/VBO.cs" Line="42" Column="7" />
+      <File FileName="Spellie/VBO.cs" Line="28" Column="14" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Spellie" expanded="True">
             <Node name="Utilities" expanded="True" />
-            <Node name="Editor.cs" selected="True" />
+            <Node name="SpellieVenster.cs" selected="True" />
           </Node>
         </State>
       </Pad>

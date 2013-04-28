@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Spellie
 {
-	public static class Triangle
+	public class Triangle
 	{
 		private static Vector2[] tr = new Vector2[3] 
 		{
@@ -16,6 +16,8 @@ namespace Spellie
 			new Vector2(0f - 0.56f, 1f - 0.5f),
 			new Vector2(1.12f - 0.56f, 0.5f - 0.5f) 
 		};
+				
+		Vector3[] vecs = new Vector3[3];
 
 		/// <summary>
 		/// Draw the Model
@@ -38,15 +40,13 @@ namespace Spellie
 		/// <param name="d">
 		/// Depth
 		/// </param>
-		public static Vector3[] Get (float x, float y, float s, float c, float r, float d)
+		public Vector3[] Get (float x, float y, float s, float c, float r, float d)
 		{
-			Vector3[] vecs = new Vector3[3];
-
-			for(int i = 0; i < 3; i++)			
-				vecs[i] = new Vector3(
-					x + tr[i].X * c * r - tr[i].Y * s * r,
-					y + tr[i].X * s * r + tr[i].Y * c * r, 
-					d);
+			for (int i = 0; i < 3; i++) {
+				vecs [i].X = x + tr [i].X * c * r - tr [i].Y * s * r;
+				vecs [i].Y = y + tr [i].X * s * r + tr [i].Y * c * r;
+				vecs [i].Z = d;
+			}
 			
 			return vecs;
 		}
