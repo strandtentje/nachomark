@@ -62,7 +62,9 @@ namespace Spellie
 
 			erval = config.TryGetInt("targetinterval", 110);
 
-			//threads = config.TryGetInt ("threads", 2);
+			vti = new Vertex[snakeCount * (elemCount + 2) * 3];
+
+			threads = config.TryGetInt ("threads", 2);
 
 			//updateReady= new Semaphore(0, threads);
 		}
@@ -101,15 +103,22 @@ namespace Spellie
 
 		//Semaphore updateReady;
 	
+		void update (object offset)
+		{			
+			for (int i = (int)offset; i < snakes.Count; i += threads) {
+				snakes[i].Update ();
+				snakes[i].Draw (ar, ag, ab, ref vti, i * (elemCount + 2) * 3);
+			}
+		}
+
 		protected override void OnUpdateFrame (FrameEventArgs e)
 		{
 			base.OnUpdateFrame (e);
 
-			vti.Clear();
-			for (int i = 0; i < snakes.Count; i ++) {
-				snakes[i].Update ();
-				vti.AddRange(snakes[i].Draw (ar, ag, ab));
-			}
+			for(int i = 1; i < threads; i++)
+				(new Thread(update)).Start(i);
+
+			update (0);
 
 			ColourFade ();
 
@@ -154,7 +163,7 @@ namespace Spellie
 		double hFps, aFps;
 
 		VertexBuffer vbo = new VertexBuffer();
-		List<Vertex> vti = new List<Vertex>();
+		Vertex[] vti;
 
 		protected override void OnRenderFrame (FrameEventArgs e)
 		{
@@ -180,7 +189,7 @@ namespace Spellie
 
 			Camera.Update ();
 
-			vbo.SetData(vti.ToArray());
+			vbo.SetData(vti);
 			vbo.Render();
 
 			SwapBuffers();

@@ -29,11 +29,9 @@ namespace Spellie
 
 		Vector3 nearer = new Vector3(0,0,-0.05f);
 
-		public Vertex[] Draw (float r, float g, float b)
+		public Vertex[] Draw (float r, float g, float b, ref Vertex[] vti, int offset)
 		{			
 			Entity ent;
-
-			Vertex[] vti = new Vertex[this.Count * 3];
 
 			for(int i = 0; i < this.Count; i++)
 			{
@@ -47,12 +45,12 @@ namespace Spellie
 
 					for(int j = 0; j < 3; j++)
 					{
-						vti[i * 3 + j].Color.A = 1.0f;
-						vti[i * 3 + j].Color.R = (c.R + r) * m;
-						vti[i * 3 + j].Color.G = (c.G + g) * m;
-						vti[i * 3 + j].Color.B = (c.B + b) * m;
+						vti[offset + i * 3 + j].Color.A = 1.0f;
+						vti[offset + i * 3 + j].Color.R = (c.R + r) * m;
+						vti[offset + i * 3 + j].Color.G = (c.G + g) * m;
+						vti[offset + i * 3 + j].Color.B = (c.B + b) * m;
 
-						vti[i * 3 + j].Position = ent.Points[j];
+						vti[offset + i * 3 + j].Position = ent.Points[j];
 					}
 				}
 			}
