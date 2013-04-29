@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Spellie
+namespace NachoMark
 {
     public static class StringTools
     {

@@ -4,7 +4,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Color4 = OpenTK.Graphics.Color4;
 
-namespace Spellie
+namespace NachoMark
 {
 	public class Snake : List<Entity>
 	{		

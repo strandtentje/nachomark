@@ -5,7 +5,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace Spellie
+namespace NachoMark
 {
 	public class Settings
 	{

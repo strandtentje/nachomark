@@ -1,0 +1,9 @@
+D:\Desktop\slangie\source\Spellie\bin\Debug\Spellie.exe
+D:\Desktop\slangie\source\Spellie\bin\Debug\Spellie.pdb
+D:\Desktop\slangie\source\Spellie\bin\Debug\OpenTK.GLControl.dll
+D:\Desktop\slangie\source\Spellie\bin\Debug\OpenTK.xml
+D:\Desktop\slangie\source\Spellie\bin\Debug\OpenTK.Compatibility.xml
+D:\Desktop\slangie\source\Spellie\bin\Debug\OpenTK.GLControl.xml
+D:\Desktop\slangie\source\Spellie\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Desktop\slangie\source\Spellie\obj\x86\Debug\Spellie.exe
+D:\Desktop\slangie\source\Spellie\obj\x86\Debug\Spellie.pdb

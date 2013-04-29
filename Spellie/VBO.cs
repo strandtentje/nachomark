@@ -3,7 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK;
 using System.Runtime.InteropServices;
 
-namespace Spellie
+namespace NachoMark
 {
 	// Change this struct to add e.g. color data or anything else you need.
 	public struct Vertex

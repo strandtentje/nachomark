@@ -1,0 +1,7 @@
+D:\Desktop\slangie\source\Spellie\bin\Release\OpenTK.GLControl.dll
+D:\Desktop\slangie\source\Spellie\bin\Release\OpenTK.xml
+D:\Desktop\slangie\source\Spellie\bin\Release\OpenTK.Compatibility.xml
+D:\Desktop\slangie\source\Spellie\bin\Release\OpenTK.GLControl.xml
+D:\Desktop\slangie\source\Spellie\obj\x86\Release\ResolveAssemblyReference.cache
+D:\Desktop\slangie\source\Spellie\bin\Release\NachoMark.exe
+D:\Desktop\slangie\source\Spellie\obj\x86\Release\NachoMark.exe

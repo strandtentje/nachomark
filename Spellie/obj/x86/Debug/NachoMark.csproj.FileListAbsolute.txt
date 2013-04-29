@@ -1,0 +1,7 @@
+D:\Desktop\slangie\source\Spellie\bin\Debug\NachoMark.exe
+D:\Desktop\slangie\source\Spellie\bin\Debug\NachoMark.pdb
+D:\Desktop\slangie\source\Spellie\bin\Debug\OpenTK.xml
+D:\Desktop\slangie\source\Spellie\obj\x86\Debug\ResolveAssemblyReference.cache
+D:\Desktop\slangie\source\Spellie\obj\x86\Debug\NachoMark.exe
+D:\Desktop\slangie\source\Spellie\obj\x86\Debug\NachoMark.pdb
+D:\Desktop\slangie\source\Spellie\bin\Debug\NachoMark.exe.config

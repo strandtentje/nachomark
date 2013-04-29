@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace Spellie
+namespace NachoMark
 {
 	public class Entity
 	{

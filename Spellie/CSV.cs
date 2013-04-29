@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Spellie
+namespace NachoMark
 {
 	public static class CSV
 	{

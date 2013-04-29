@@ -6,7 +6,7 @@ using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using System.Drawing.Imaging;
 
-namespace Spellie
+namespace NachoMark
 {
     static class GLTools
     {

@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Spellie
+namespace NachoMark
 {
 	public static class Parsing
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using OpenTK;
 
-namespace Spellie
+namespace NachoMark
 {
     public static class MathTools
     {

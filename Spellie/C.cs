@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Spellie
+namespace NachoMark
 {
 	/// <summary>
 	/// C-like datafile parser and composer.

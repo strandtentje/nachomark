@@ -1,14 +1,17 @@
 using System;
 using OpenTK;
 using OpenTK.Graphics;
+using System.Threading;
 
-namespace Spellie
+namespace NachoMark
 {
 	class MainClass
 	{
 		public static void Main (string[] args)
 		{
+            Console.WriteLine("NachoMark by Rob Tierolff, www.borreh.nl");
 			C.Read("settings", runWithSettings);
+            Thread.Sleep(1900);
 		}
 
 		public static void runWithSettings(C.ValueSet config)
@@ -17,7 +20,7 @@ namespace Spellie
 			SpellieVenster gw = new SpellieVenster(
 				config))
 			{
-				gw.Run (100);
+				gw.Run (config.TryGetInt("updaterate", 100));
 			}
 		}
 	}

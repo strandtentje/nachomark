@@ -8,12 +8,14 @@ using GraphicsMode = OpenTK.Graphics.GraphicsMode;
 using Color4 = OpenTK.Graphics.Color4;
 using System.Threading;
 
-namespace Spellie
+namespace NachoMark
 {
 	class SpellieVenster : OpenTK.GameWindow
 	{
 		Camera Camera = new Camera();
 		C.ValueSet config;
+
+        public static bool getFPS;
 
 		bool follow; float fov;
 		int snakeCount, elemCount;
@@ -25,16 +27,21 @@ namespace Spellie
 		int threads;
 		int erval;
 
+        int[] threadWork;
+
 		public static float ratio;
 
+        Semaphore[] smph;
+        bool[] done;
+
 		public SpellieVenster (C.ValueSet config)
-			: base(1600, 900, GraphicsMode.Default, "Spellie", GameWindowFlags.Fullscreen)
+			: base(1600, 900, GraphicsMode.Default, "Spellie", GameWindowFlags.Default)
 		{
 			this.config = config;
 
-			VSync = VSyncMode.Off;
+            VSync = (config.TryGetInt("vsync", 0) == 1 ? VSyncMode.On : VSyncMode.Off);
 
-			if (false) {
+			if (true) {
 				this.WindowBorder = OpenTK.WindowBorder.Hidden;
 				this.Location = 
 				new System.Drawing.Point (
@@ -66,13 +73,19 @@ namespace Spellie
 
 			threads = config.TryGetInt ("threads", 2);
 
+            done = new bool[threads];
+            smph = new Semaphore[threads];
+
+            for (int i = 0; i < threads; i++)
+            {
+                smph[i] = new Semaphore(0, 1);
+                done[i] = true;
+            }
+                        
 			//updateReady= new Semaphore(0, threads);
 		}
 
-		float gameSpeed = -0.4f;
-		int cEnt;
-
-		List<Snake> snakes = new List<Snake>();
+        List<Snake> snakes = new List<Snake>();
 
 
 		protected override void OnLoad (EventArgs e)
@@ -87,7 +100,9 @@ namespace Spellie
 			GL.Enable(EnableCap.AlphaTest);
 			GL.Enable(EnableCap.Blend);
 			GL.Enable(EnableCap.DepthTest);
-
+            
+            for (int i = 0; i < threads; i++)
+                (new Thread(update)).Start(i);
 		}
 
         protected override void OnResize(EventArgs e)
@@ -101,30 +116,42 @@ namespace Spellie
             GL.LoadMatrix(ref projection);
         }
 
-		//Semaphore updateReady;
-	
+        bool stopped;
+
+
 		void update (object offset)
-		{			
-			for (int i = (int)offset; i < snakes.Count; i += threads) {
-				snakes[i].Update ();
-				snakes[i].Draw (ar, ag, ab, ref vti, i * (elemCount + 2) * 3);
-			}
+		{
+            int p = (int)offset;
+
+            while (!stopped)
+            {
+                smph[p].WaitOne();
+                for (int i = (int)offset; i < snakeCount; i += threads)
+                {
+                    snakes[i].Update();
+                    snakes[i].Draw(ar, ag, ab, ref vti, i * (elemCount + 2) * 3);
+                }
+                done[p] = true ;
+            }
 		}
 
 		protected override void OnUpdateFrame (FrameEventArgs e)
 		{
 			base.OnUpdateFrame (e);
 
-			for(int i = 1; i < threads; i++)
-				(new Thread(update)).Start(i);
-
-			update (0);
+            for (int i = 0; i < threads; i++)
+            {
+                if (done[i])
+                {
+                    done[i] = false;
+                    smph[i].Release();
+                }
+            }
 
 			ColourFade ();
 
 			if (Keyboard [Key.Escape]) {
-				Console.WriteLine("Avg: " + aFps.ToString());
-				Console.WriteLine("Max: " + hFps.ToString());
+                stopped = true;
 
 				Exit ();
 			}
@@ -193,20 +220,6 @@ namespace Spellie
 			vbo.Render();
 
 			SwapBuffers();
-
-			return;
-
-			cDate = DateTime.Now.TimeOfDay.TotalMilliseconds;
-
-			fps = 1000 / (cDate - pDate);
-
-			aFps += fps;
-			aFps /= 2;
-
-			hFps = (hFps < fps ? fps : hFps);
-
-			pDate = cDate;
 		}
-
 	}
 }

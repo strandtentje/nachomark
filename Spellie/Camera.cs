@@ -2,7 +2,7 @@ using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace Spellie
+namespace NachoMark
 {
 	public class Camera
 	{

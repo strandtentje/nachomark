@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -7,8 +7,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{AB2C29C3-2906-4724-8004-AC5B3F036BB3}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Spellie</RootNamespace>
-    <AssemblyName>Spellie</AssemblyName>
+    <RootNamespace>NachoMark</RootNamespace>
+    <AssemblyName>NachoMark</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,9 +37,6 @@
     <Reference Include="OpenTK">
       <HintPath>..\..\Downloads\opentk\Binaries\OpenTK\Release\OpenTK.dll</HintPath>
     </Reference>
-    <Reference Include="OpenTK.Compatibility">
-      <HintPath>..\..\Downloads\opentk\Binaries\OpenTK\Release\OpenTK.Compatibility.dll</HintPath>
-    </Reference>
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
@@ -59,9 +58,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="bin\Debug\settings.txt" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utilities\" />
-  </ItemGroup>
+  <ItemGroup />
 </Project>
