@@ -40,8 +40,10 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Colourization.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="PID.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="SpellieVenster.cs" />
     <Compile Include="Utilities\GLTools.cs" />
@@ -49,7 +51,6 @@
     <Compile Include="Utilities\StringTools.cs" />
     <Compile Include="Model.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="CSV.cs" />
     <Compile Include="Camera.cs" />
     <Compile Include="C.cs" />
     <Compile Include="Utilities\Parsing.cs" />

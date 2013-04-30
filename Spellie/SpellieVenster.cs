@@ -14,64 +14,63 @@ namespace NachoMark
 	{
 		Camera Camera = new Camera();
 		C.ValueSet config;
-
-        public static bool getFPS;
-
+        
 		bool follow; float fov;
-		int snakeCount, elemCount;
-
-		float offCenter, amplitude;
-		float near, far;
-		float smallest, extra;
-
-		int threads;
-		int erval;
-
-        int[] threadWork;
-
 		public static float ratio;
 
+		int snakeCount, elemCount;
+        
+        int threads;
+		
         Semaphore[] smph;
         bool[] done;
+
+        Vertex[] GraphicsBuffer;
+        int GraphicsBufferPosition;
 
 		public SpellieVenster (C.ValueSet config)
 			: base(1600, 900, GraphicsMode.Default, "Spellie", GameWindowFlags.Default)
 		{
 			this.config = config;
 
-            VSync = (config.TryGetInt("vsync", 0) == 1 ? VSyncMode.On : VSyncMode.Off);
-
-			if (true) {
-				this.WindowBorder = OpenTK.WindowBorder.Hidden;
-				this.Location = 
-				new System.Drawing.Point (
-					config.TryGetInt ("left", 0),
-					config.TryGetInt ("top", 0));
-				this.Size = 
-				new System.Drawing.Size (
-					config.TryGetInt ("width", 800), 
-					config.TryGetInt ("height", 600));
-			}
-
-			ratio = (float)(this.Width) / (float)(this.Height);
-
+            SetGraphics();
+            
 			follow = config.TryGetInt ("follow", 1) == 1;
-			snakeCount = config.TryGetInt ("nsnakes", 10);
-			elemCount = config.TryGetInt ("nelem", 100);
-			fov = config.TryGetFloat ("fov", 4.0f);
+			snakeCount = config.TryGetInt ("nsnakes", 10);			
+            fov = config.TryGetFloat ("fov", 1.1f);
+            elemCount = config.TryGetInt("nelem", 300);
 
-			offCenter = config.TryGetFloat ("center", 4.0f);
-			amplitude = config.TryGetFloat ("ampli", 4.0f);
-			near = config.TryGetFloat ("near", 1.0f);
-			far = config.TryGetFloat ("far", 16f);
-			smallest = config.TryGetFloat ("smallest", 0.1f);
-			extra = config.TryGetFloat ("extra", 0.3f);
+            SetGraphicsBuffer();
 
-			erval = config.TryGetInt("targetinterval", 110);
+            InitThreads();
+		}
 
-			vti = new Vertex[snakeCount * (elemCount + 2) * 3];
+        void SetGraphics()
+        {
+            VSync = (config.TryGetInt("vsync", 0) == 1 ? VSyncMode.On : VSyncMode.Off);
+            this.WindowBorder = OpenTK.WindowBorder.Hidden;
+            this.Location =
+                new System.Drawing.Point(
+                    config.TryGetInt("left", 0),
+                    config.TryGetInt("top", 0));
 
-			threads = config.TryGetInt ("threads", 2);
+            this.Size =
+                new System.Drawing.Size(
+                    config.TryGetInt("width", 800),
+                    config.TryGetInt("height", 600));
+
+            ratio = (float)(this.Width) / (float)(this.Height);
+        }
+
+        void SetGraphicsBuffer()
+        {
+            GraphicsBuffer = new Vertex[snakeCount * (elemCount + 2) * 3];
+            GraphicsBufferPosition = 0;
+        }
+
+        void InitThreads()
+        {
+            threads = config.TryGetInt("threads", 2);
 
             done = new bool[threads];
             smph = new Semaphore[threads];
@@ -81,29 +80,35 @@ namespace NachoMark
                 smph[i] = new Semaphore(0, 1);
                 done[i] = true;
             }
-                        
-			//updateReady= new Semaphore(0, threads);
-		}
+        }
 
         List<Snake> snakes = new List<Snake>();
-
-
+        
 		protected override void OnLoad (EventArgs e)
 		{
 			base.OnLoad (e);
 
-			for(int i = 1; i <= snakeCount; i++)
-				snakes.Add(new Snake(i % 15, elemCount, offCenter, amplitude, near, far, smallest, extra, erval));
-		
 			GL.ClearColor(0f, 0f, 0f, 0f);
 
 			GL.Enable(EnableCap.AlphaTest);
 			GL.Enable(EnableCap.Blend);
 			GL.Enable(EnableCap.DepthTest);
-            
+
+            LoadSnakes();
+            StartThreads();
+		}
+
+        void LoadSnakes()
+        {
+            for(int i = 0; i <= snakeCount; i++)
+                snakes.Add(new Snake(config, GraphicsBuffer, ref GraphicsBufferPosition));
+        }
+
+        void StartThreads()
+        {
             for (int i = 0; i < threads; i++)
                 (new Thread(update)).Start(i);
-		}
+        }
 
         protected override void OnResize(EventArgs e)
         {
@@ -117,8 +122,7 @@ namespace NachoMark
         }
 
         bool stopped;
-
-
+        
 		void update (object offset)
 		{
             int p = (int)offset;
@@ -126,11 +130,9 @@ namespace NachoMark
             while (!stopped)
             {
                 smph[p].WaitOne();
-                for (int i = (int)offset; i < snakeCount; i += threads)
-                {
-                    snakes[i].Update();
-                    snakes[i].Draw(ar, ag, ab, ref vti, i * (elemCount + 2) * 3);
-                }
+                for (int i = (int)offset; i < snakeCount; i += threads)                
+                    snakes[i].Update(ar, ag, ab);
+                
                 done[p] = true ;
             }
 		}
@@ -158,8 +160,7 @@ namespace NachoMark
 		}
 
 		void ColourFade()
-		{
-			
+		{			
 			ar += dr;
 			ag += dg;
 			ab += db;
@@ -182,23 +183,14 @@ namespace NachoMark
 		float ar = 0.2f, ag = 0.5f, ab = 0.8f;
 		float dr = 0.005f, dg = 0.005f, db = 0.005f;
 
-		double pDate = DateTime.Now.TimeOfDay.TotalMilliseconds;
-		double cDate ;
-
-		double fps;
-
-		double hFps, aFps;
-
 		VertexBuffer vbo = new VertexBuffer();
-		Vertex[] vti;
-
 		protected override void OnRenderFrame (FrameEventArgs e)
 		{
 			base.OnRenderFrame (e);
 
 			GL.Clear (ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 					
-			if (follow) {
+			if (false) {
 				Camera.subject.X = snakes [0] [1].X;
 				Camera.subject.Y = snakes [0] [1].Y;
 				Camera.subject.Z = snakes [0] [1].Z;
@@ -216,7 +208,7 @@ namespace NachoMark
 
 			Camera.Update ();
 
-			vbo.SetData(vti);
+            vbo.SetData(GraphicsBuffer);
 			vbo.Render();
 
 			SwapBuffers();

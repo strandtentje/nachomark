@@ -14,92 +14,78 @@ namespace NachoMark
 			return (float)rnd.NextDouble();
 		}
 
+        Entity Bait = new Entity();
+        int baitRunaway, baitCountdown;
+        float offCenterBait, amplitudeBait;
+        float nearBait, farBait;
+                
+        public Snake(C.ValueSet Settings, Vertex[] GraphicsBuffer, ref int GraphicsBufferPosition)
+        {
+            offCenterBait = Settings.TryGetFloat("center", 20f);
+            amplitudeBait = Settings.TryGetFloat("ampli", 40f);
+            nearBait = Settings.TryGetFloat("near", -1f);
+            farBait = Settings.TryGetFloat("far", 17f);
+            baitRunaway = Settings.TryGetInt("targetinterval", 120);
 
-		public void DoPathfinding ()
+            this.Add(
+                new Entity(GraphicsBuffer, ref GraphicsBufferPosition)
+                {
+                    PIDSetting = new PID()
+                    {
+                        ProportionalGain = 0.0001f,
+                        IntegralGain = 0f,
+                        DifferentialGain = 0.001f,
+                        IntegralCap = 0.001f,
+                    },
+                    Friction = 0.989f,
+                    Scale = 0.0f,
+                }
+                );
+
+            int amountOfElements = Settings.TryGetInt("nelem", 300);
+            float
+                minimalSize = Settings.TryGetFloat("smallest", 0.5f),
+                additionalSize = Settings.TryGetFloat("extra", 0.8f);
+
+            int snakeColour = (int)(rand() * 16f);
+
+            for (int i = 0; i < amountOfElements; i++)
+                this.Add(new Entity(GraphicsBuffer, ref GraphicsBufferPosition)
+                {
+                    X = rand() * 8 - 4, Y = rand() * 8 - 4, Z = 4f,
+                    Target = this[(int)(i * rand())],
+                    PIDSetting = new PID()
+                    {
+                        ProportionalGain = 0.001f + rand() * 0.005f,
+                        IntegralGain = 0.001f + rand() * 0.005f,
+                        DifferentialGain = 0.001f + rand() * 0.005f,
+                        IntegralCap = 0.001f,
+                    },
+                    Scale = minimalSize + rand() * additionalSize,
+                    Colour = snakeColour, Friction = 0.99f - rand() * 0.1f,
+                });
+            
+            this[0].Target = Bait;
+        }
+        		
+        public void Update (float r, float g, float b)
 		{
-			foreach(Entity ent in this)
-				ent.ApproachTarget();
-		}
+           baitCountdown++;
 
-		public void UpdatePoints()
-		{
-			foreach(Entity ent in this)
-				ent.UpdatePoints();
-		}
+            if (baitCountdown == baitRunaway)
+            {
+                Bait.X = (offCenterBait + (float)rnd.NextDouble() * amplitudeBait * SpellieVenster.ratio) * (rnd.Next(2) == 1 ? -1 : 1);
+                Bait.Y = (offCenterBait + (float)rnd.NextDouble() * amplitudeBait) * (rnd.Next(2) == 1 ? -1 : 1);
+                Bait.Z = (nearBait + (float)rnd.NextDouble() * farBait);
+                baitCountdown = 0;
+            }	
 
-		Vector3 nearer = new Vector3(0,0,-0.05f);
-
-		public Vertex[] Draw (float r, float g, float b, ref Vertex[] vti, int offset)
-		{			
-			Entity ent;
-
-			for(int i = 0; i < this.Count; i++)
-			{
-				ent = this[i];
-
-				if (ent.Points != null) 
-				{	
-					float m = (20f - ent.Z) / 20f ;
-
-					Color4 c = ent.GetRealColor() ;
-
-					for(int j = 0; j < 3; j++)
-					{
-						vti[offset + i * 3 + j].Color.A = 1.0f;
-						vti[offset + i * 3 + j].Color.R = (c.R + r) * m;
-						vti[offset + i * 3 + j].Color.G = (c.G + g) * m;
-						vti[offset + i * 3 + j].Color.B = (c.B + b) * m;
-
-						vti[offset + i * 3 + j].Position = ent.Points[j];
-					}
-				}
-			}
-
-			return vti;
-		}
-
-		Entity bait = new Entity();
-		
-		int ctr = 0;
-
-		public void Update()
-		{			
-			ctr++;
-
-			if (ctr == erval)
-			{
-				bait.X = (offCenter + (float)rnd.NextDouble() * amplitude * SpellieVenster.ratio) * (rnd.Next(2) == 1 ? -1 : 1);
-				bait.Y = (offCenter + (float)rnd.NextDouble() * amplitude) * (rnd.Next(2) == 1 ? -1 : 1);
-				bait.Z = (near + (float)rnd.NextDouble() * far);
-				ctr =0;
-			}			
-
-			DoPathfinding();
-			UpdatePoints();
-		}
-
-		float offCenter, amplitude;
-		float near, far;
-		int erval;
-
-		public Snake (int cBase, int nelem, float offCenter, float amplitude, float near, float far, float minSize, float addSize, int erval)
-		{			
-			this.offCenter = offCenter;
-			this.amplitude = amplitude;
-			this.near = near; this.far = far;
-			this.erval = erval;
-
-			Entity e = new Entity (0f, 0f, 0f, null, 0.0001f, 0f, 0.001f, 0.001f, 0.3f, 0f, 0, 1f, 0.989f, "main");
-			this.Add (e);
-
-			for (int i = 0; i < nelem; i++) {
-				this.Add(new Entity(
-					rand() * 2 - 1, rand() * 2 - 1, 4f, 
-					this[(int)(i * rand())], 0.001f + rand() * 0.005f, 0.001f + rand() * 0.005f, 0.001f + rand() * 0.005f, 0.001f,
-					minSize + rand () * addSize, 0f, cBase, 0f, 0.99f - rand() * 0.1f, "toet"));
-			}
-
-			this[0].Target = bait;
+            foreach (Entity I in this)
+            {
+                I.UpdateEntity();
+                I.UpdateVertices();
+                I.UpdateColour(r, g, b);
+            }
 		}
 	}
 }

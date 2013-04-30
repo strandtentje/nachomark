@@ -8,17 +8,34 @@ using System.IO;
 
 namespace NachoMark
 {
+    /// <summary>
+    /// Class to modify a tri in a vertexbuffer
+    /// </summary>
 	public class Triangle
 	{
-		private static Vector2[] tr = new Vector2[3] 
+		private static Vector2[] BaseTriangle = new Vector2[3] 
 		{
 			new Vector2(0f - 0.56f, 0f - 0.5f),
 			new Vector2(0f - 0.56f, 1f - 0.5f),
 			new Vector2(1.12f - 0.56f, 0.5f - 0.5f) 
 		};
-				
-		Vector3[] vecs = new Vector3[3];
 
+        Vertex[] targetArray; int offset;
+
+        /// <summary>
+        /// Construct a new Triangle.
+        /// </summary>
+        /// <param name="targetArray">Vertexbuffer wherein this triangle lives</param>
+        /// <param name="offset">Position whereat it lives.</param>
+        public Triangle(Vertex[] targetArray, int offset)
+        {
+            this.targetArray = targetArray;
+            this.offset = offset;
+        }
+
+        float sineScale, coseScale;
+        int inBuf;
+				
 		/// <summary>
 		/// Draw the Model
 		/// </summary>
@@ -40,15 +57,24 @@ namespace NachoMark
 		/// <param name="d">
 		/// Depth
 		/// </param>
-		public Vector3[] Get (float x, float y, float s, float c, float r, float d)
+		public void Update(
+            float X, float Y, 
+            float Sine, float Cosine, 
+            float Scale, float Depth)
 		{
+            // sineScale = Sine * Scale;
+            // coseScale = Cosine * Scale;
+
 			for (int i = 0; i < 3; i++) {
-				vecs [i].X = x + tr [i].X * c * r - tr [i].Y * s * r;
-				vecs [i].Y = y + tr [i].X * s * r + tr [i].Y * c * r;
-				vecs [i].Z = d;
+                inBuf = offset + i;
+
+                targetArray[inBuf].Position.X = 
+                    X + BaseTriangle[i].X * Cosine * Scale - BaseTriangle[i].Y * Sine * Scale;
+                targetArray[inBuf].Position.Y =
+                    Y + BaseTriangle[i].X * Sine * Scale + BaseTriangle[i].Y * Cosine * Scale;
+                targetArray[inBuf].Position.Z =
+                    Depth;
 			}
-			
-			return vecs;
 		}
 	}
 }
