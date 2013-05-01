@@ -40,22 +40,24 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Colourization.cs" />
+    <Compile Include="IO\ValueSet.cs" />
+    <Compile Include="Math\FloatBounce.cs" />
+    <Compile Include="OpenGL\Colourization.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="PID.cs" />
-    <Compile Include="Settings.cs" />
+    <Compile Include="Math\PID.cs" />
+    <Compile Include="Math\Rand.cs" />
     <Compile Include="SpellieVenster.cs" />
-    <Compile Include="Utilities\GLTools.cs" />
-    <Compile Include="Utilities\MathTools.cs" />
-    <Compile Include="Utilities\StringTools.cs" />
-    <Compile Include="Model.cs" />
+    <Compile Include="OpenGL\Textures.cs" />
+    <Compile Include="Math\Interpolation.cs" />
+    <Compile Include="OpenGL\Model.cs" />
     <Compile Include="Entity.cs" />
-    <Compile Include="Camera.cs" />
-    <Compile Include="C.cs" />
-    <Compile Include="Utilities\Parsing.cs" />
+    <Compile Include="OpenGL\Camera.cs" />
+    <Compile Include="IO\CLON.cs" />
+    <Compile Include="IO\Parsing.cs" />
     <Compile Include="Snake.cs" />
-    <Compile Include="VBO.cs" />
+    <Compile Include="OpenGL\VBO.cs" />
+    <Compile Include="Math\TriangleMath.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
+using NachoMark.OpenGL;
+using NachoMark.Math;
 
 namespace NachoMark
 {
@@ -81,7 +83,7 @@ namespace NachoMark
             VY *= Friction;
             VZ *= Friction;
 
-            Rotate = (float)Math.Atan2(VY, VX);
+            Rotate = (float)System.Math.Atan2(VY, VX);
             X += VX; Y += VY; Z += VZ;
 		}
 
@@ -97,8 +99,8 @@ namespace NachoMark
         /// </summary>
         public void UpdateVertices()
         {
-            Sin = (float)Math.Sin(Rotate);
-            Cos = (float)Math.Cos(Rotate);
+            Sin = (float)System.Math.Sin(Rotate);
+            Cos = (float)System.Math.Cos(Rotate);
 
             MyGraphic.Update(X, Y, Sin, Cos, Scale, Z);
         }
@@ -112,6 +114,15 @@ namespace NachoMark
                 Colour, (20f - Z) / 20f, 
                 RedMod, GreenMod, BlueMod);
         }
+
+        public void UpdateColour()
+        {
+            UpdateColour(
+                Target.MyHue.RedAdd,
+                Target.MyHue.GreenAdd,
+                Target.MyHue.BlueAdd);
+        }
+
 	}
 }
 

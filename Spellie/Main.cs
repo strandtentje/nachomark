@@ -2,6 +2,7 @@ using System;
 using OpenTK;
 using OpenTK.Graphics;
 using System.Threading;
+using NachoMark.IO;
 
 namespace NachoMark
 {
@@ -10,11 +11,11 @@ namespace NachoMark
 		public static void Main (string[] args)
 		{
             Console.WriteLine("NachoMark by Rob Tierolff, www.borreh.nl");
-			C.Read("settings", runWithSettings);
+			CLON.Read("settings", runWithSettings);
             Thread.Sleep(1900);
 		}
 
-		public static void runWithSettings(C.ValueSet config)
+		public static void runWithSettings(ValueSet config)
 		{			
 			using (
 			SpellieVenster gw = new SpellieVenster(

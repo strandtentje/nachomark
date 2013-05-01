@@ -3,7 +3,7 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK;
 using System.Runtime.InteropServices;
 
-namespace NachoMark
+namespace NachoMark.OpenGL
 {
 	// Change this struct to add e.g. color data or anything else you need.
 	public struct Vertex

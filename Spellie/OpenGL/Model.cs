@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.IO;
 
-namespace NachoMark
+namespace NachoMark.OpenGL
 {
     /// <summary>
     /// Class to modify a tri in a vertexbuffer
@@ -33,7 +33,6 @@ namespace NachoMark
             this.offset = offset;
         }
 
-        float sineScale, coseScale;
         int inBuf;
 				
 		/// <summary>
@@ -62,9 +61,6 @@ namespace NachoMark
             float Sine, float Cosine, 
             float Scale, float Depth)
 		{
-            // sineScale = Sine * Scale;
-            // coseScale = Cosine * Scale;
-
 			for (int i = 0; i < 3; i++) {
                 inBuf = offset + i;
 

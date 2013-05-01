@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NachoMark
+namespace NachoMark.Math
 {
     /// <summary>
     /// A PID controller with PIDC settings.

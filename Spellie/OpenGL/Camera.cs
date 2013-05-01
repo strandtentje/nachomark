@@ -2,7 +2,7 @@ using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace NachoMark
+namespace NachoMark.OpenGL
 {
 	public class Camera
 	{
@@ -30,6 +30,13 @@ namespace NachoMark
 			GL.MatrixMode (MatrixMode.Modelview);
 			GL.LoadMatrix (ref modelview);
 		}
-	}
+
+        public void Initialize(int Width, int Height, float fov)
+        {
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView((float)System.Math.PI / fov, Width / (float)Height, 1.0f, 64.0f);
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadMatrix(ref projection);
+        }
+    }
 }
 
