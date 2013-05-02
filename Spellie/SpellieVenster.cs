@@ -67,6 +67,10 @@ namespace NachoMark
         Vertex[] GraphicsBuffer;
         int GraphicsBufferPosition;
 
+        /// <summary>
+        /// Enable/disable vsync, set window boundaries
+        /// and calculate aspect ratio
+        /// </summary>
         void SetGraphics()
         {
             VSync = (config.TryGetInt("vsync", 0) == 1 ? VSyncMode.On : VSyncMode.Off);
@@ -84,6 +88,9 @@ namespace NachoMark
             ratio = (float)(this.Width) / (float)(this.Height);
         }
 
+        /// <summary>
+        /// Construct a new Vertex array for all graphics.
+        /// </summary>
         void SetGraphicsBuffer()
         {
             GraphicsBuffer = new Vertex[snakeCount * (elemCount + 2) * 3];
