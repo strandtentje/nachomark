@@ -49,7 +49,7 @@ namespace NachoMark.OpenGL
             Red += RMod; Green += GMod; Blue += BMod;
             Red *= Brightness; Green *= Brightness; Blue *= Brightness;
 
-            for (int i = GraphicsBufferPosition; i < GraphicsBufferPosition + 3; i++)
+            for (int i = GraphicsBufferPosition; i < GraphicsBufferPosition + Triangle.Model.Length; i++)
             {
                 GraphicsBuffer[i].Color.A = 1.0f;
                 GraphicsBuffer[i].Color.R = Red;

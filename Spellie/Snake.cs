@@ -21,6 +21,7 @@ namespace NachoMark
         float DMin, DAmp;
         float ICap;
         float FMin, FAmp;
+        float MinTarget, AmpTarget;
 
         int amountOfElements;
         float minimalSize, additionalSize;
@@ -49,6 +50,9 @@ namespace NachoMark
 
             FMin = Settings.TryGetFloat("maxslippery", 0.99f);
             FAmp = Settings.TryGetFloat("minslippery", 0.84f) - FMin;
+
+            MinTarget = Settings.TryGetFloat("mintarget", 0.0f);
+            AmpTarget = Settings.TryGetFloat("maxtarget", 1.0f) - MinTarget;
         }
 
         void LoadProportions(ValueSet Settings)
@@ -93,7 +97,7 @@ namespace NachoMark
             return new Entity(GraphicsBuffer, ref GraphicsBufferPosition)
                 {
                     X = Rand.om(-4f, 8f), Y = Rand.om(-4f, 8f), Z = 4f,
-                    Target = this[Rand.um(currentLength)],
+                    Target = this[(int)(Rand.om(MinTarget, AmpTarget) * (float)currentLength)],
                     PIDSetting = new PID()
                     {
                         ProportionalGain = Rand.om(PMin, PAmp),

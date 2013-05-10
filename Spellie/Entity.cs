@@ -68,7 +68,7 @@ namespace NachoMark
             
             MyGraphic = new Triangle(GraphicsBuffer, GraphicsBufferPosition);
             MyHue = new Colourization(GraphicsBuffer, GraphicsBufferPosition);
-            GraphicsBufferPosition += 3;
+            GraphicsBufferPosition += Triangle.Model.Length;
 		}
 
         

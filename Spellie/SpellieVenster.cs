@@ -27,6 +27,7 @@ namespace NachoMark
             snakeCount = config.TryGetInt("nsnakes", 10);
             fov = config.TryGetFloat("fov", 1.1f);
             elemCount = config.TryGetInt("nelem", 300);
+            follow = config.TryGetInt("follow", 0) == 1;
 
             SetGraphicsBuffer();
 
@@ -47,7 +48,7 @@ namespace NachoMark
             StartThreads();
         }
         
-        bool stopped;
+        bool stopped, follow;
 
         #region View
         Camera Camera = new Camera(); 
@@ -93,7 +94,7 @@ namespace NachoMark
         /// </summary>
         void SetGraphicsBuffer()
         {
-            GraphicsBuffer = new Vertex[snakeCount * (elemCount + 2) * 3];
+            GraphicsBuffer = new Vertex[snakeCount * (elemCount + 2) * Triangle.Model.Length];
             GraphicsBufferPosition = 0;
         }
 
@@ -103,6 +104,11 @@ namespace NachoMark
             base.OnRenderFrame(e);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            if (follow)
+            {
+               //Camera.subject = snakes[0]
+            }
 
             Camera.Update();
 
@@ -146,7 +152,8 @@ namespace NachoMark
         #region Threads
         int threads;
         Semaphore[] smph;
-        bool[] done;        
+        bool[] done;       
+ 
         void InitThreads()
         {
             threads = config.TryGetInt("threads", 2);
@@ -160,6 +167,7 @@ namespace NachoMark
                 done[i] = true;
             }
         }
+
         void StartThreads()
         {
             for (int i = 0; i < threads; i++)

@@ -13,11 +13,19 @@ namespace NachoMark.OpenGL
     /// </summary>
 	public class Triangle
 	{
-		private static Vector2[] BaseTriangle = new Vector2[3] 
+        public static Vector3[] Model = new Vector3[9] 
 		{
-			new Vector2(0f - 0.56f, 0f - 0.5f),
-			new Vector2(0f - 0.56f, 1f - 0.5f),
-			new Vector2(1.12f - 0.56f, 0.5f - 0.5f) 
+            new Vector3(-0.42f, -0.00f, 0.54f),
+            new Vector3(-0.83f, 1f, -0.54f),
+            new Vector3(-0.83f, -1f, -0.54f),
+ 
+            new Vector3(1f, 0f, -0.62f),
+            new Vector3(-0.42f, 0f, 0.54f),
+            new Vector3(-0.83f, -1f, -0.54f),
+ 
+            new Vector3(1f, 0f, -0.62f),
+            new Vector3(-0.42f, 0f, 0.54f),
+            new Vector3(-0.83f, 1f, -0.54f)
 		};
 
         Vertex[] targetArray; int offset;
@@ -61,15 +69,14 @@ namespace NachoMark.OpenGL
             float Sine, float Cosine, 
             float Scale, float Depth)
 		{
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < Model.Length; i++) {
                 inBuf = offset + i;
 
-                targetArray[inBuf].Position.X = 
-                    X + BaseTriangle[i].X * Cosine * Scale - BaseTriangle[i].Y * Sine * Scale;
+                targetArray[inBuf].Position.X =
+                    X + Model[i].X * Cosine * Scale - Model[i].Z * Sine * Scale;
                 targetArray[inBuf].Position.Y =
-                    Y + BaseTriangle[i].X * Sine * Scale + BaseTriangle[i].Y * Cosine * Scale;
-                targetArray[inBuf].Position.Z =
-                    Depth;
+                    Y + Model[i].X * Sine * Scale + Model[i].Z * Cosine * Scale;
+                targetArray[inBuf].Position.Z = -Model[i].Y * 0.02f + Depth;
 			}
 		}
 	}
