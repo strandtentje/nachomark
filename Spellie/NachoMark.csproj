@@ -9,8 +9,9 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>NachoMark</RootNamespace>
     <AssemblyName>NachoMark</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <StartupObject>NachoMark.MainClass</StartupObject>
+    <CodePage>65001</CodePage>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
