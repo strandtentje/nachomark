@@ -57,7 +57,7 @@ namespace NachoMark
 
         void LoadProportions(ValueSet Settings)
         {
-            amountOfElements = Settings.TryGetInt("nelem", 300);
+            amountOfElements = Settings.TryGetInt("length", 300);
             minimalSize = Settings.TryGetFloat("smallest", 0.5f);
             additionalSize = Settings.TryGetFloat("extra", 0.8f);
         }
@@ -86,7 +86,7 @@ namespace NachoMark
 
             int snakeColour = Rand.um(16);
 
-            for (int i = 0; i < amountOfElements; i++)
+            for (int i = 0; i < amountOfElements - 1; i++)
                 this.Add(GetNewRandomEntity(GraphicsBuffer, ref GraphicsBufferPosition, snakeColour, currentLength: i));
             
             this[0].Target = Bait;

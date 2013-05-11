@@ -23,20 +23,20 @@ namespace NachoMark
             this.config = config;
 
             SetGraphics();
-
-            snakeCount = config.TryGetInt("nsnakes", 10);
             fov = config.TryGetFloat("fov", 1.1f);
-            elemCount = config.TryGetInt("nelem", 300);
-            follow = config.TryGetInt("follow", 0) == 1;
 
-            SetGraphicsBuffer();
-
-            InitThreads();
+            SetGraphicsBuffer(config.TryGetInt("totallength", 0));
         }
+
+        int snakeCount;
 
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+
+            snakeCount = snakes.Count;
+
+            InitThreads();
 
             GL.ClearColor(0f, 0f, 0f, 0f);
 
@@ -91,9 +91,9 @@ namespace NachoMark
         /// <summary>
         /// Construct a new Vertex array for all graphics.
         /// </summary>
-        void SetGraphicsBuffer()
+        void SetGraphicsBuffer(int totalLength)
         {
-            GraphicsBuffer = new Vertex[snakeCount * (elemCount + 2) * Triangle.Model.Length];
+            GraphicsBuffer = new Vertex[totalLength * Triangle.Model.Length];
             GraphicsBufferPosition = 0;
         }
 
@@ -114,7 +114,6 @@ namespace NachoMark
         #endregion Render
                 
         #region Snakes
-        int snakeCount, elemCount;
         List<Snake> snakes = new List<Snake>();
 
         FloatBounce

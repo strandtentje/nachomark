@@ -1,18 +1,18 @@
 settings
 {
-left=0;
-top=0;
-width=1600;
-height=900;
+left=-1280;
+top=176;
+width=1280;
+height=1024;
 fov=1.1;
 follow=0;
-nelem=5000;
-nsnakes=6;
 threads=2;
 targetinterval=120;
+snakes=snakea,snakeb,snakec,snaked,snakee,snakef
 }
 snakea
 {
+length=1000;
 center=20;
 ampli=40;
 near=1;
@@ -24,6 +24,7 @@ maxtarget=0.5;
 }
 snakeb
 {
+length=1000;
 center=20;
 ampli=40;
 near=1;
@@ -35,6 +36,7 @@ maxtarget=1.0;
 }
 snakec
 {
+length=1000;
 center=20;
 ampli=40;
 near=8;
@@ -46,6 +48,7 @@ maxtarget=1.0;
 }
 snaked
 {
+length=1000;
 center=20;
 ampli=40;
 near=8;
@@ -57,6 +60,7 @@ maxtarget=1.0;
 }
 snakee
 {
+length=1000;
 center=20;
 ampli=40;
 near=8;
@@ -67,7 +71,7 @@ mintarget=0.8;
 maxtarget=1.0;
 }
 snakef
-{
+length=1000;
 center=20;
 ampli=40;
 near=8;
