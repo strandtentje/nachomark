@@ -9,6 +9,10 @@ using NachoMark.IO;
 
 namespace NachoMark
 {
+    /// <summary>
+    /// A snake consisting of entities that chase each other 
+    /// in order to reach a goal.
+    /// </summary>
 	public class Snake : List<Entity>
 	{		
         Entity Bait = new Entity();
@@ -23,9 +27,15 @@ namespace NachoMark
         float FMin, FAmp;
         float MinTarget, AmpTarget;
 
-        int amountOfElements;
+        int amountOfElements, snakeColour;
         float minimalSize, additionalSize;
 
+        /// <summary>
+        /// Load settings from valueset that modify 
+        /// attributes of target spawning.
+        /// </summary>
+        /// <param name="Settings">Settings to load from
+        /// </param>
         void LoadBaitSettings(ValueSet Settings)
         {
             offCenterBait = Settings.TryGetFloat("center", 20f);
@@ -35,6 +45,12 @@ namespace NachoMark
             baitRunaway = Settings.TryGetInt("targetinterval", 120);
         }
 
+        /// <summary>
+        /// Load settings from valueset that specify how one
+        /// element follows another.
+        /// </summary>
+        /// <param name="Settings">Settings to load from
+        /// </param>
         void LoadPIDSettings(ValueSet Settings)
         {
             PMin = Settings.TryGetFloat("pmin", 0.003f);
@@ -55,13 +71,28 @@ namespace NachoMark
             AmpTarget = Settings.TryGetFloat("maxtarget", 1.0f) - MinTarget;
         }
 
+        /// <summary>
+        /// Load settings from valueset that specify
+        /// how long a snake is and what sizes its elements
+        /// can be.
+        /// </summary>
+        /// <param name="Settings">Settings to load from
+        /// </param>
         void LoadProportions(ValueSet Settings)
         {
             amountOfElements = Settings.TryGetInt("length", 300);
             minimalSize = Settings.TryGetFloat("smallest", 0.5f);
             additionalSize = Settings.TryGetFloat("extra", 0.8f);
+            snakeColour = Settings.TryGetInt("snakecolour", 3);
         }
 
+        /// <summary>
+        /// Construct a new snake from settings for a graphics buffer.
+        /// </summary>
+        /// <param name="Settings">Settings to load snake attributes from</param>
+        /// <param name="GraphicsBuffer">Graphics buffer to write to</param>
+        /// <param name="GraphicsBufferPosition">Position in graphics buffer
+        /// at which to start.</param>
         public Snake(ValueSet Settings, Vertex[] GraphicsBuffer, ref int GraphicsBufferPosition)
         {
             LoadBaitSettings(Settings);
@@ -87,12 +118,25 @@ namespace NachoMark
             int snakeColour = Rand.um(16);
 
             for (int i = 0; i < amountOfElements - 1; i++)
-                this.Add(GetNewRandomEntity(GraphicsBuffer, ref GraphicsBufferPosition, snakeColour, currentLength: i));
+                this.Add(GetNewRandomEntity(GraphicsBuffer, ref GraphicsBufferPosition, currentLength: i));
             
             this[0].Target = Bait;
         }
 
-        Entity GetNewRandomEntity(Vertex[] GraphicsBuffer, ref int GraphicsBufferPosition, int snakeColour, int currentLength)
+        /// <summary>
+        /// Produces a new random entry that adheres to
+        /// the set boundaries of this snake.
+        /// </summary>
+        /// <param name="GraphicsBuffer">Graphics buffer to
+        /// write to.</param>
+        /// <param name="GraphicsBufferPosition">Position
+        /// in graphics buffer at which to start</param>
+        /// <param name="snakeColour">Colour of this snake
+        /// </param>
+        /// <param name="currentLength">Current length of the
+        /// snake (not the final length!)</param>
+        /// <returns></returns>
+        Entity GetNewRandomEntity(Vertex[] GraphicsBuffer, ref int GraphicsBufferPosition, int currentLength)
         {
             return new Entity(GraphicsBuffer, ref GraphicsBufferPosition)
                 {
@@ -109,7 +153,14 @@ namespace NachoMark
                     Colour = snakeColour, Friction = Rand.om(FMin, FAmp)
                 };
         }
-        		
+
+        /// <summary>
+        /// Update all elements in this snake and use the
+        /// given colour modification.
+        /// </summary>
+        /// <param name="r">Red channel to add</param>
+        /// <param name="g">Green channel to add</param>
+        /// <param name="b">Blue channel to add</param>       		
         public void Update (float r, float g, float b)
 		{
            baitCountdown++;

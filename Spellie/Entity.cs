@@ -20,6 +20,10 @@ namespace NachoMark
 		    Friction = 0.998f;
 
         PID myPID;
+        /// <summary>
+        /// PID settings that modify the way this entity
+        /// chases its target.
+        /// </summary>
         public PID PIDSetting
         {
             get
@@ -50,10 +54,10 @@ namespace NachoMark
         Triangle MyGraphic;
         Colourization MyHue;
 
-        public Entity()
-        {
-
-        }
+        /// <summary>
+        /// Construct an invisibru entitry.
+        /// </summary>
+        public Entity() { }
 
         /// <summary>
         /// Construct a new entity.

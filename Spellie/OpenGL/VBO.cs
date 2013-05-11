@@ -5,7 +5,10 @@ using System.Runtime.InteropServices;
 
 namespace NachoMark.OpenGL
 {
-	// Change this struct to add e.g. color data or anything else you need.
+    /// <summary>
+    /// A vertex for the buffer consisting of 
+    /// a colour structure and a vector3 position structure.
+    /// </summary>
 	public struct Vertex
 	{
 	    public OpenTK.Graphics.Color4 Color;
@@ -14,15 +17,17 @@ namespace NachoMark.OpenGL
 	    public static readonly int Stride = Marshal.SizeOf(default(Vertex));
 	}
 	 
-	// As simple as it gets. Usage:
-	// VertexBuffer vbo  = new VertexBuffer();
-	// vbo.SetData(new Vertex[] { ... });
-	// vbo.Render();
-	// You can make it as fancy as you want (for example, I have an implementation using generics).
-	sealed class VertexBuffer
+	/// <summary>
+	/// Vertex Buffer of all vertices to be loaded to 
+    /// the gpu in one easy gesture.
+	/// </summary>
+    sealed class VertexBuffer
 	{
 	    int id;
 	 
+        /// <summary>
+        /// Get the buffer ID to use.
+        /// </summary>
 	    int Id
 	    {
 	        get 
@@ -39,13 +44,14 @@ namespace NachoMark.OpenGL
 	 
 	            return id;
 	        }
-	    }
-	 
-	    public VertexBuffer()
-	    { }
+	    }	 
 
 		Vertex[] data;
 	 
+        /// <summary>
+        /// Put data in opengl buffer.
+        /// </summary>
+        /// <param name="data">Data</param>
 	    public void SetData(Vertex[] data)
 	    {
 	        if (data == null)
@@ -57,6 +63,9 @@ namespace NachoMark.OpenGL
 	        GL.BufferData(BufferTarget.ArrayBuffer, new IntPtr(data.Length * Vertex.Stride), data, BufferUsageHint.StaticDraw);
 	    }
 	 
+        /// <summary>
+        /// Draw data in buffer.
+        /// </summary>
 	    public void Render()
 	    {
 			GL.EnableClientState(ArrayCap.ColorArray);

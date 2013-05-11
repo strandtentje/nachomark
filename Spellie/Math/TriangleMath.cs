@@ -7,6 +7,13 @@ namespace NachoMark.Math
 {
     public static class TriangleMath
     {
+        /// <summary>
+        /// Check if two triangles overlap
+        /// </summary>
+        /// <param name="A">A vector3 array of three entries</param>
+        /// <param name="B">Another vector3 array of three entries 
+        /// to overlap</param>
+        /// <returns>Overlappiness of these two arrays</returns>
         public static bool overlappingTriangles(Vector3[] A, Vector3[] B)
         {
             bool one, two, three;

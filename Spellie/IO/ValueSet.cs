@@ -67,6 +67,11 @@ namespace NachoMark.IO
             }
         }
 
+        /// <summary>
+        /// Set a string value at the name
+        /// </summary>
+        /// <param name="name">Name of setting</param>
+        /// <param name="value">String value at setting</param>
         public void Set(string name, string value)
         {
             if (this.ContainsKey(name)) this.Remove(name);

@@ -11,7 +11,6 @@ namespace NachoMark
     /// </summary>
 	class MainClass
 	{
-
 		public static void Main (string[] args)
 		{
             foreach(string arg in args)
@@ -21,6 +20,11 @@ namespace NachoMark
             RunScreensaver();       
 		}
 
+        /// <summary>
+        /// Load settings from file with clon
+        /// and show them in a window. Allow 
+        /// users to modify these settings.
+        /// </summary>
         static void RunConfig()
         {
 
