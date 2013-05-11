@@ -44,7 +44,6 @@ namespace NachoMark
             GL.Enable(EnableCap.Blend);
             GL.Enable(EnableCap.DepthTest);
 
-            LoadSnakes();
             StartThreads();
         }
         
@@ -104,12 +103,7 @@ namespace NachoMark
             base.OnRenderFrame(e);
 
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            if (follow)
-            {
-               //Camera.subject = snakes[0]
-            }
-
+            
             Camera.Update();
 
             vbo.SetData(GraphicsBuffer);
@@ -127,11 +121,10 @@ namespace NachoMark
             RAdd = new FloatBounce(0.0f, 1.0f, 0.005f),
             GAdd = new FloatBounce(0.0f, 1.0f, 0.005f),
             BAdd = new FloatBounce(0.0f, 1.0f, 0.005f);
-        	
-        void LoadSnakes()
+
+        public void AddSnake(ValueSet config)
         {
-            for(int i = 0; i <= snakeCount; i++)
-                snakes.Add(new Snake(config, GraphicsBuffer, ref GraphicsBufferPosition));
+            snakes.Add(new Snake(config, GraphicsBuffer, ref GraphicsBufferPosition));
         }
 
         void UpdateSnakes(object offset)
