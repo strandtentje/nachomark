@@ -17,7 +17,10 @@ namespace NachoMark
                 if (arg.Contains("/s") || arg.Contains("/S"))
                 { RunConfig(); return; }
 
-            RunScreensaver();       
+			if (args.Length == 1)
+            	RunScreensaver(args[0]);
+			else
+				RunScreensaver();
 		}
 
         /// <summary>
@@ -37,12 +40,12 @@ namespace NachoMark
         /// parameters of the viewport window, add the 
         /// individual snakes and run.
         /// </summary>
-        static void RunScreensaver()
+        static void RunScreensaver(string settingsFile = "settings.clon")
         {
             Console.WriteLine("NachoMark by Rob Tierolff, www.borreh.nl");
 
             CLON settings = new CLON();
-            settings.Load("settings.clon");
+            settings.Load(settingsFile);
 
             ValueSet basicSettings = settings["settings"];
             Window = new SpellieVenster(basicSettings);
