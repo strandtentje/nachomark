@@ -14,8 +14,17 @@ namespace NachoMark
         /// </summary>
         /// <param name="dirty">Dirty string</param>
         /// <returns>Clean string</returns>
-		public static string CleanUp(string dirty)
+		public static string CleanUp (string dirty)
 		{
+			int start, end;
+
+			while (dirty.Contains("/*")) {
+				start = dirty.IndexOf("/*");
+				end = dirty.IndexOf("*/");
+
+				dirty = dirty.Remove(start, (end - start) + 2);
+			}
+
 			return dirty
 				.ToLower().Replace("\r","").Replace("\n","").Replace(" ","").Replace("\t","");
 		}
@@ -70,6 +79,7 @@ namespace NachoMark
 			stream.Read();
 			return true;
 		}
+
 	}
 }
 

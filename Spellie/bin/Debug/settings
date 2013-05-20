@@ -1,83 +1,54 @@
 settings
 {
-left=-1280;
-top=176;
-width=1280;
-height=1024;
-fov=1.1;
-follow=0;
-threads=2;
-targetinterval=120;
-snakes=snakea,snakeb,snakec,snaked,snakee,snakef
+	left=0; top=0;
+	width=1366; height=768;
+
+	fov=3.4; follow=1;
+	
+	threads=1;
+	targetinterval=120;
+	updaterate=60;
+	vsync=0;
+	
+	totallength=500;
+	
+	snakes=fire.water;
 }
-snakea
+water
 {
-length=1000;
-center=20;
-ampli=40;
-near=1;
-far=8;
-smallest=0.2;
-extra=0.7;
-mintarget=0.0;
-maxtarget=0.5;
+	length=250;
+
+	center=2; ampli=4;
+	near=5; far=16;
+	smallest=0.1; extra=0.2;
+	
+	pmin=0.002; pmax=0.003;
+	imin=0.003; imax=0.009;
+	dmin=0.000; dmax=0.000;
+	icap=0.001;
+
+	maxslippery=0.96; minslippery=0.94;
+
+	mintarget=0.0; maxtarget=1.0;	
+	
+	snakeColour=3.1;
 }
-snakeb
+fire
 {
-length=1000;
-center=20;
-ampli=40;
-near=1;
-far=8;
-smallest=0.2;
-extra=0.7;
-mintarget=0.5;
-maxtarget=1.0;
-}
-snakec
-{
-length=1000;
-center=20;
-ampli=40;
-near=8;
-far=16;
-smallest=0.2;
-extra=0.7;
-mintarget=0.8;
-maxtarget=1.0;
-}
-snaked
-{
-length=1000;
-center=20;
-ampli=40;
-near=8;
-far=16;
-smallest=0.2;
-extra=0.7;
-mintarget=0.8;
-maxtarget=1.0;
-}
-snakee
-{
-length=1000;
-center=20;
-ampli=40;
-near=8;
-far=16;
-smallest=0.2;
-extra=0.7;
-mintarget=0.8;
-maxtarget=1.0;
-}
-snakef
-length=1000;
-center=20;
-ampli=40;
-near=8;
-far=16;
-smallest=0.2;
-extra=0.7;
-mintarget=0.8;
-maxtarget=1.0;
+	length=250;
+
+	center=2; ampli=4;
+	near=5; far=16;
+	smallest=0.1; extra=0.2;
+	
+	pmin=0.003; pmax=0.008;
+	imin=0.000; imax=0.001;
+	dmin=0.012; dmax=0.052;
+	icap=0.001;
+
+	maxslippery=0.96; minslippery=0.94;
+
+	mintarget=0.4; maxtarget=0.7;		
+
+        snakeColour=6.4; 	
 }#

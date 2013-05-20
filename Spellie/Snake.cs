@@ -27,7 +27,8 @@ namespace NachoMark
         float FMin, FAmp;
         float MinTarget, AmpTarget;
 
-        int amountOfElements, snakeColour;
+        int amountOfElements;
+		int[] snakeColours;
         float minimalSize, additionalSize;
 
         /// <summary>
@@ -83,7 +84,8 @@ namespace NachoMark
             amountOfElements = Settings.TryGetInt("length", 300);
             minimalSize = Settings.TryGetFloat("smallest", 0.5f);
             additionalSize = Settings.TryGetFloat("extra", 0.8f);
-            snakeColour = Settings.TryGetInt("snakecolour", 3);
+			snakeColours = Settings.TryGetInts("snakecolour");
+            // snakeColour = Settings.TryGetInt("snakecolour", 3);
         }
 
         /// <summary>
@@ -150,7 +152,8 @@ namespace NachoMark
                         IntegralCap = ICap,
                     },
                     Scale = Rand.om(minimalSize, additionalSize),
-                    Colour = snakeColour, Friction = Rand.om(FMin, FAmp)
+                    Colour = snakeColours[Rand.um(snakeColours.Length)], 
+					Friction = Rand.om(FMin, FAmp)
                 };
         }
 

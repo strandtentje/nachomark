@@ -67,6 +67,27 @@ namespace NachoMark.IO
             }
         }
 
+		/// <summary>
+		/// Tries to get .-seperated ints from the string values
+		/// </summary>
+		/// <returns>
+		/// seperate ints
+		/// </returns>
+		/// <param name='name'>
+		/// Name of setting
+		/// </param>
+		/// <param name='dflt'>
+		/// Default
+		/// </param>
+		public int[] TryGetInts (string name)
+		{
+			string[] vals = this[name].Split('.');
+			List<int> ints = new List<int>();
+			foreach(string value in vals)
+				ints.Add(int.Parse(value));
+			return ints.ToArray();
+		}
+
         /// <summary>
         /// Set a string value at the name
         /// </summary>

@@ -40,7 +40,7 @@ namespace NachoMark
         /// parameters of the viewport window, add the 
         /// individual snakes and run.
         /// </summary>
-        static void RunScreensaver(string settingsFile = "settings.clon")
+        static void RunScreensaver(string settingsFile = "settings")
         {
             Console.WriteLine("NachoMark by Rob Tierolff, www.borreh.nl");
 
